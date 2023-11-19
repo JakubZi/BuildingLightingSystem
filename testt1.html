@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Bulb Control</title>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css"
+        integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #98EEF5;
+            background-size: cover;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+			
+        }
+
+        h1 {
+            color: #000000;
+            margin-bottom: 20px;
+        }
+
+        .tabs {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        .tab {
+            padding: 8px 16px; 
+            margin: 0 8px; 
+            background-color: #4CAF50;
+            color: #fff;
+            border-radius: 5px;
+            text-decoration: none;
+            font-size: 13px; 
+            transition: background-color 0.3s ease;
+        }
+
+        .tab:hover {
+            background-color: #45a049;
+        }
+		
+		form {
+            text-align: center;
+        }
+
+        h2 {
+            margin-bottom: 20px;
+        }
+
+        input[type="range"] {
+            -webkit-appearance: none;
+            width: 68%; 
+            height: 17px; 
+            border-radius: 8.5px; 
+            background: #d3d3d3;
+            outline: none;
+            opacity: 0.7;
+            -webkit-transition: .2s;
+            transition: opacity .2s;
+            margin: 8.5px; 
+        }
+
+        input[type="range"]:hover {
+            opacity: 1;
+        }
+
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 25.5px; 
+            height: 25.5px; 
+            border-radius: 50%;
+            background: #4CAF50;
+            cursor: pointer;
+        }
+
+        input[type="range"]::-moz-range-thumb {
+            width: 25.5px; 
+            height: 25.5px; 
+            border-radius: 50%;
+            background: #4CAF50;
+            cursor: pointer;
+        }
+
+        .preview {
+            margin-top: 17px; 
+        }
+
+        @media (max-width: 600px) {
+            /* Adjust styles for smaller screens */
+            input[type="range"] {
+                width: 100%;
+                max-width: none;
+            }
+        }
+    </style>
+</head>
+
+<body>
+	<h1>ESP Intelligent Building Lighting System</h1>
+    <div class="tabs">
+        <a href="testt.html" class="tab" onclick="showTab('tab1')">Led Control</a>
+        <a href="testt1.html" class="tab" onclick="showTab('tab2')">Brightness</a>
+        <!-- <a href="testt2.html" class="tab" onclick="showTab('tab3')">Schedule</a> -->
+    </div>
+	
+    <h2>LED Brightness Control</h2>
+    <form>
+        <label for="brightness">All Leds:</label>
+        <input type="range" id="brightness" name="brightness" min="0" max="1023" oninput="updateBrightness(this.value)">
+        <p>Current Brightness: <span id="currentBrightness">0</span></p>
+    </form>
+
+    <form>
+        <label for="led1">LED 1:</label>
+        <input type="range" id="led1" name="led1" min="0" max="1023" oninput="updateLED(0, this.value)">
+        <p>Current Brightness: <span id="currentLED1">0</span></p>
+
+        <label for="led2">LED 2:</label>
+        <input type="range" id="led2" name="led2" min="0" max="1023" oninput="updateLED(1, this.value)">
+        <p>Current Brightness: <span id="currentLED2">0</span></p>
+
+        <label for="led3">LED 3:</label>
+        <input type="range" id="led3" name="led3" min="0" max="1023" oninput="updateLED(2, this.value)">
+        <p>Current Brightness: <span id="currentLED3">0</span></p>
+
+        <label for="led4">LED 4:</label>
+        <input type="range" id="led4" name="led4" min="0" max="1023" oninput="updateLED(3, this.value)">
+        <p>Current Brightness: <span id="currentLED4">0</span></p>
+    </form>
+
+    <script>
+        function updateBrightness(value) {
+            document.getElementById('currentBrightness').innerText = value;
+            var xhr = new XMLHttpRequest();
+            xhr.open('GET', '/set_brightness?value=' + value, true);
+            xhr.send();
+        }
+
+        function updateLED(led, value) {
+            document.getElementById('currentLED' + (led + 1)).innerText = value;
+            var xhr = new XMLHttpRequest();
+            xhr.open('GET', '/set_led?led=' + (led + 1) + '&value=' + value, true);
+            xhr.send();
+        }
+    </script>
+</body>
+
+</html>
